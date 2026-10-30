@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>IAmAtomic</AssemblyName>
+    <Version>1.2.0</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <SdkDir Condition="'$(SdkDir)' == ''">$(MOD_SDK_DIR)</SdkDir>
+    <SdkDir Condition="'$(SdkDir)' == ''">$(MSBuildProjectDirectory)/sdk</SdkDir>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src/**/*.cs" />
+    <Reference Include="$(SdkDir)/ThunderRoad.dll" Private="false" />
+    <Reference Include="$(SdkDir)/Newtonsoft.Json.dll" Private="false" />
+    <Reference Include="$(SdkDir)/UnityEngine*.dll" Private="false" />
+  </ItemGroup>
+  <Target Name="ValidateSdk" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(SdkDir)/ThunderRoad.dll') Or !Exists('$(SdkDir)/UnityEngine.CoreModule.dll') Or !Exists('$(SdkDir)/Newtonsoft.Json.dll')" Text="Informe SdkDir ou MOD_SDK_DIR com as DLLs de referencia compativeis de ThunderRoad, Unity e Newtonsoft.Json. Elas nao sao distribuidas neste repositorio." />
+  </Target>
+</Project>
